@@ -32,10 +32,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Sends error messages to index.php to print out below the form
         if ($errors) {
-            $_SESSION["error_signup"] = $errors;
+            $_SESSION["errors_login"] = $errors;
             header("Location: ../index.php");
             die();
         }
+
+        $newSessionId = session_create_id();
+        $sessionId = $newSessionId . "_" . $result["id"];
+        session_id($sessionId);
+
+        $_SESSION["user_id"] = $result["id"];
+        $_SESSION["user_username"] = htmlspecialchars($result["username"]);
+
+        header("Location: ../index.php?login=success");
+
+        $pdo = null;
+        $stmt = null;
+
+        die();
 
 
     } catch (PDOException $e) {
